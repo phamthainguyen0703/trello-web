@@ -1,4 +1,4 @@
-import React from "react";
+import { useState } from "react";
 import ModeSelect from "~/components/ModeSelect";
 import Box from "@mui/material/Box";
 import AppsIcon from "@mui/icons-material/Apps";
@@ -17,8 +17,14 @@ import Tooltip from "@mui/material/Tooltip";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import Profiles from "./Menus/Profiles";
 import AddToPhotosIcon from "@mui/icons-material/AddToPhotos";
+import InputAdornment from "@mui/material/InputAdornment";
+import SearchIcon from "@mui/icons-material/Search";
+import CloseIcon from "@mui/icons-material/Close";
+import theme from "~/theme";
 
 function AppBar() {
+  const [searchValue, setSearchValue] = useState("");
+
   return (
     <Box
       sx={{
@@ -30,6 +36,8 @@ function AppBar() {
         justifyContent: "space-between",
         gap: 2,
         overflowX: "auto",
+        backgroundColor: (theme) =>
+          theme.palette.mode === "dark" ? "#2c3e50" : "#1565c0",
       }}
     >
       <Box
@@ -41,7 +49,7 @@ function AppBar() {
       >
         <AppsIcon
           sx={{
-            color: "primary.main",
+            color: "white",
           }}
         />
         <Box
@@ -56,7 +64,7 @@ function AppBar() {
             inheritViewBox
             fontSize="small"
             sx={{
-              color: "primary.main",
+              color: "white",
             }}
           />
           <Typography
@@ -64,7 +72,7 @@ function AppBar() {
             sx={{
               fontSize: "1.2rem",
               fontWeight: "bold",
-              color: "primary.main",
+              color: "white",
             }}
           >
             Trello
@@ -76,7 +84,7 @@ function AppBar() {
           <Recent />
           <Starred />
           <Templates />
-          <Button variant="outlined" startIcon={<AddToPhotosIcon />}>
+          <Button sx={{ color: "white" }} startIcon={<AddToPhotosIcon />}>
             Create
           </Button>
         </Box>
@@ -92,19 +100,52 @@ function AppBar() {
         <TextField
           id="outlined-search"
           label="Search..."
-          type="search"
+          type="text"
           size="small"
-          sx={{ minWidth: "120px" }}
+          value={searchValue}
+          onChange={(e) => setSearchValue(e.target.value)}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <SearchIcon sx={{ color: "white" }} />
+              </InputAdornment>
+            ),
+            endAdornment: (
+              <InputAdornment position="end">
+                <CloseIcon
+                  onClick={() => setSearchValue("")}
+                  fontSize="small"
+                  sx={{
+                    color: "white",
+                    cursor: "pointer",
+                    display: searchValue.length <= 0 ? "none" : "block",
+                  }}
+                />
+              </InputAdornment>
+            ),
+          }}
+          sx={{
+            minWidth: "120px",
+            maxWidth: "180px",
+            "& label": { color: "white" },
+            "& input": { color: "white" },
+            "& label.Mui-focused": { color: "white" },
+            "& .MuiOutlinedInput-root": {
+              "& fieldset": { borderColor: "white" },
+              "&:hover fieldset": { borderColor: "white" },
+              "&.Mui-focused fieldset": { borderColor: "white" },
+            },
+          }}
         />
         <ModeSelect />
 
         <Tooltip title="Notification">
-          <Badge color="secondary" variant="dot" sx={{ cursor: "pointer" }}>
-            <NotificationsNoneIcon sx={{ color: "primary.main" }} />
+          <Badge color="warning" variant="dot" sx={{ cursor: "pointer" }}>
+            <NotificationsNoneIcon sx={{ color: "white" }} />
           </Badge>
         </Tooltip>
 
-        <Tooltip title="Help" sx={{ cursor: "pointer", color: "primary.main" }}>
+        <Tooltip title="Help" sx={{ cursor: "pointer", color: "white" }}>
           <HelpOutlineIcon />
         </Tooltip>
 
