@@ -108,6 +108,9 @@ const BoardBar = () => {
               height: 34,
               fontSize: 16,
               border: "none",
+              color: "white",
+              cursor: "pointer",
+              "&:first-of-type": { backgroundColor: "#a4b0be" },
             },
           }}
         >
