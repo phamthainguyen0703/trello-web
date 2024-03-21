@@ -20,7 +20,20 @@ import DragHandleIcon from "@mui/icons-material/DragHandle";
 import ListCards from "./ListCards/ListCards";
 import { mapOrder } from "~/utils/sorts";
 
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
+
 function Column({ column }) {
+  const { attributes, listeners, setNodeRef, transform, transition } =
+    useSortable({ id: column._id, data: { ...column } });
+
+  const dndKitColumnStyles = {
+    TouchAction: "none", //dành cho sensor default dạng pointersensor
+
+    transform: CSS.Translate.toString(transform),
+    transition,
+  };
+
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -34,6 +47,10 @@ function Column({ column }) {
 
   return (
     <Box
+      ref={setNodeRef}
+      style={dndKitColumnStyles}
+      {...attributes}
+      {...listeners}
       sx={{
         backgroundColor: (theme) =>
           theme.palette.mode === "dark" ? "#333643" : "#ebecf0",
