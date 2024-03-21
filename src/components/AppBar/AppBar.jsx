@@ -1,5 +1,5 @@
 import { useState } from "react";
-import ModeSelect from "~/components/ModeSelect";
+import ModeSelect from "~/components/ModeSelect/ModeSelect";
 import Box from "@mui/material/Box";
 import AppsIcon from "@mui/icons-material/Apps";
 import { ReactComponent as TrelloIcon } from "~/assets/trello.svg";
@@ -20,7 +20,6 @@ import AddToPhotosIcon from "@mui/icons-material/AddToPhotos";
 import InputAdornment from "@mui/material/InputAdornment";
 import SearchIcon from "@mui/icons-material/Search";
 import CloseIcon from "@mui/icons-material/Close";
-import theme from "~/theme";
 
 function AppBar() {
   const [searchValue, setSearchValue] = useState("");
@@ -137,6 +136,7 @@ function AppBar() {
             },
           }}
         />
+
         <ModeSelect />
 
         <Tooltip title="Notification">
