@@ -10,6 +10,7 @@ import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import Avatar from "@mui/material/Avatar";
 import AvatarGroup from "@mui/material/AvatarGroup";
 import { Tooltip } from "@mui/material";
+import { capitalizeFirstLetter } from "~/utils/formatters";
 
 const MENU_STYLES = {
   color: "white",
@@ -25,17 +26,17 @@ const MENU_STYLES = {
   },
 };
 
-const BoardBar = () => {
+function BoardBar({ board }) {
   return (
     <Box
       sx={{
         width: "100%",
         height: (theme) => theme.trello.boardBarHeight,
-        paddingX: 2,
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
         gap: 2,
+        paddingX: 2,
         overflowX: "auto",
         backgroundColor: (theme) =>
           theme.palette.mode === "dark" ? "#34495e" : "#1976d2",
@@ -51,13 +52,13 @@ const BoardBar = () => {
         <Chip
           sx={MENU_STYLES}
           icon={<DashboardIcon />}
-          label="PhamThaiNguyen MERN Stack Board"
+          label={board?.title}
           clickable
         />
         <Chip
           sx={MENU_STYLES}
           icon={<VpnLockIcon />}
-          label="Public/Private Workspace"
+          label={capitalizeFirstLetter(board?.type)}
           clickable
         />
         <Chip
@@ -177,6 +178,6 @@ const BoardBar = () => {
       </Box>
     </Box>
   );
-};
+}
 
 export default BoardBar;
