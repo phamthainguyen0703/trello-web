@@ -16,6 +16,7 @@ import {
   useSensors,
   DragOverlay,
   defaultDropAnimationSideEffects,
+  closestCorners,
 } from "@dnd-kit/core";
 
 const ACTIVE_DRAG_ITEM_TYPE = {
@@ -194,10 +195,12 @@ function BoardContent({ board }) {
   };
   return (
     <DndContext
+      sensors={sensors}
+      //"Thuật Toán Phát Hiện Va Chạm" - "Collision Detection Algorithms"
+      collisionDetection={closestCorners}
       onDragEnd={handleDragEnd}
       onDragOver={handleDragOver}
       onDragStart={handleDragStart}
-      sensors={sensors}
     >
       <Box
         sx={{
