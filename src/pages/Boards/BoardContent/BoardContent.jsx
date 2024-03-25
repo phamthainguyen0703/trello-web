@@ -196,7 +196,7 @@ function BoardContent({ board }) {
   return (
     <DndContext
       sensors={sensors}
-      //"Thuật Toán Phát Hiện Va Chạm" - "Collision Detection Algorithms"
+      //"Thuật Toán Phát Hiện Va Chạm" - "Collision Detection Algorithms"  fix lỗi card cover lớn sẽ không thể kéo qua column
       collisionDetection={closestCorners}
       onDragEnd={handleDragEnd}
       onDragOver={handleDragOver}
