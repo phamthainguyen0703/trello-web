@@ -4,12 +4,12 @@ import ListColumns from "./ListColumns/ListColumns";
 import { mapOrder } from "~/utils/sorts";
 import Column from "./ListColumns/Column/Column";
 import Card from "./ListColumns/Column/ListCards/Card/Card";
-import { cloneDeep } from "lodash";
+import { cloneDeep, isEmpty } from "lodash";
 
 import { arrayMove } from "@dnd-kit/sortable";
 import {
   DndContext,
-  PointerSensor,
+  // PointerSensor,
   MouseSensor,
   TouchSensor,
   useSensor,
@@ -18,11 +18,12 @@ import {
   defaultDropAnimationSideEffects,
   closestCorners,
   pointerWithin,
-  rectIntersection,
+  // rectIntersection,
   getFirstCollision,
-  closestCenter,
+  // closestCenter,
 } from "@dnd-kit/core";
 import { Container } from "@mui/material";
+import { generatePlaceholderCard } from "~/utils/formatters";
 
 const ACTIVE_DRAG_ITEM_TYPE = {
   COLUMN: " ACTIVE_DRAG_ITEM_TYPE-COLUMN",
@@ -118,6 +119,12 @@ function BoardContent({ board }) {
         nextActiveColumn.cards = nextActiveColumn.cards.filter(
           (card) => card._id !== activeDraggingCardId
         );
+
+        // thêm placeholder card nếu column rỗng
+        if (isEmpty(nextActiveColumn.cards)) {
+          nextActiveColumn.cards = [generatePlaceholderCard(nextActiveColumn)];
+        }
+
         //cập nhật lại mảng cardOrderIds
         nextActiveColumn.cardOrderIds = nextActiveColumn.cards.map(
           (card) => card._id
@@ -141,6 +148,10 @@ function BoardContent({ board }) {
           newCardIndex,
           0,
           rebuild_activeDraggingCardData
+        );
+        // xóa placeholder card đi nếu đang tồn tại
+        nextOverColumn.cards = nextOverColumn.cards.filter(
+          (card) => !card.FE_PlaceholderCard
         );
 
         //cập nhật lại mảng cardOrderIds
@@ -297,20 +308,23 @@ function BoardContent({ board }) {
       }
       //tìm các điểm giao nhau, va chạm(intersection với con trỏ )
       const pointerIntersection = pointerWithin(args);
-      const intersection = !!pointerIntersection?.length
-        ? pointerIntersection
-        : rectIntersection(args);
+
+      // fix triệt để bug flickering => nếu pointerIntersection là mảng rỗng, return luôn kh làm gì next
+      if (!pointerIntersection?.length) return;
+
+      // const intersection = !!pointerIntersection?.length
+      //   ? pointerIntersection
+      //   : rectIntersection(args);
 
       //tìm overId đầu tiền trong intersection
-      let overId = getFirstCollision(intersection, "id");
+      let overId = getFirstCollision(pointerIntersection, "id");
       if (overId) {
         // nếu overId là column thì sẽ tìm đến cardid gần nhất bên trong khu vực va chạm
-
         const checkColumn = orderedColumnState.find(
           (column) => column._id === overId
         );
         if (checkColumn) {
-          overId = closestCenter({
+          overId = closestCorners({
             ...args,
             droppableContainers: args.droppableContainers.filter(
               (Container) =>

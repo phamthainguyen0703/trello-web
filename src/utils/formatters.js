@@ -22,3 +22,13 @@ export const capitalizeFirstLetter = (val) => {
  * stringTest: Of course, nothing changes =))
  * capString: Trungquandev
  */
+
+//tạo ra 1 card đặc biệt chỉ có ở FE: FE_PlaceholderCard và sẽ đc ẩn đi ở ui (fix bug column rỗng kh thể kéo card)
+export const generatePlaceholderCard = (column) => {
+  return {
+    _id: `${column._id}-placeholder-card`,
+    boardId: column.boardId,
+    columnId: column._id,
+    FE_PlaceholderCard: true,
+  };
+};
