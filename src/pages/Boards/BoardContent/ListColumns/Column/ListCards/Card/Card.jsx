@@ -10,7 +10,6 @@ import Typography from "@mui/material/Typography";
 
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { Block } from "@mui/icons-material";
 
 function Card({ card }) {
   const {
