@@ -31,7 +31,7 @@ const ACTIVE_DRAG_ITEM_TYPE = {
   CARD: " ACTIVE_DRAG_ITEM_TYPE-CARD",
 };
 
-function BoardContent({ board }) {
+function BoardContent({ board, createNewColumn, createNewCard }) {
   //fix trường hợp click bị gọi event(drag và move 10px thì mới gọi event)
   // const pointerSensor = useSensor(PointerSensor, {
   //   activationConstraint: {
@@ -366,7 +366,11 @@ function BoardContent({ board }) {
           p: "10px 0",
         }}
       >
-        <ListColumns columns={orderedColumnState} />
+        <ListColumns
+          columns={orderedColumnState}
+          createNewColumn={createNewColumn}
+          createNewCard={createNewCard}
+        />
         <DragOverlay
           dropAnimation={{
             duration: 500,

@@ -12,7 +12,7 @@ import {
   horizontalListSortingStrategy,
 } from "@dnd-kit/sortable";
 
-function ListColumns({ columns }) {
+function ListColumns({ columns, createNewColumn, createNewCard }) {
   const [newColumnTitle, setNewColumnTitle] = useState(" ");
 
   const [openNewColumnForm, setOpenNewColumnForm] = useState(false);
@@ -21,12 +21,17 @@ function ListColumns({ columns }) {
     setOpenNewColumnForm(!openNewColumnForm);
   };
 
-  const addNewColumn = () => {
+  const addNewColumn = async () => {
     if (!newColumnTitle) {
       toast.error("Please enter column title");
       return;
     }
     // console.log(newColumnTitle);
+
+    const newColumnData = {
+      title: newColumnTitle,
+    };
+    await createNewColumn(newColumnData);
 
     //đóng trạng thái thêm column mới & clear input
     toggleOpenNewColumnForm();
@@ -52,7 +57,11 @@ function ListColumns({ columns }) {
         }}
       >
         {columns?.map((column) => (
-          <Column key={column._id} column={column} />
+          <Column
+            key={column._id}
+            column={column}
+            createNewCard={createNewCard}
+          />
         ))}
 
         {/* box add new column */}

@@ -27,7 +27,7 @@ import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import theme from "~/theme";
 
-function Column({ column }) {
+function Column({ column, createNewCard }) {
   const {
     attributes,
     listeners,
@@ -65,13 +65,19 @@ function Column({ column }) {
     setOpenNewCardForm(!openNewCardForm);
   };
 
-  const addNewCard = () => {
+  const addNewCard = async () => {
     if (!newCardTitle) {
       toast.error("Please enter card title", { position: "bottom-right" });
 
       return;
     }
     // console.log(newCardTitle);
+    const newCardData = {
+      title: newCardTitle,
+      columnId: column._id,
+    };
+
+    await createNewCard(newCardData);
 
     //đóng trạng thái thêm card mới & clear input
     toggleOpenNewCardForm();
