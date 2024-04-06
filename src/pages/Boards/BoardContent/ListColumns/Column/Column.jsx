@@ -57,7 +57,7 @@ function Column({ column, createNewCard }) {
 
   const orderedCards = mapOrder(column?.cards, column?.cardOrderIds, "_id");
 
-  const [newCardTitle, setNewCardTitle] = useState(" ");
+  const [newCardTitle, setNewCardTitle] = useState("");
 
   const [openNewCardForm, setOpenNewCardForm] = useState(false);
 

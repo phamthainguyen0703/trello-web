@@ -13,7 +13,7 @@ import {
 } from "@dnd-kit/sortable";
 
 function ListColumns({ columns, createNewColumn, createNewCard }) {
-  const [newColumnTitle, setNewColumnTitle] = useState(" ");
+  const [newColumnTitle, setNewColumnTitle] = useState("");
 
   const [openNewColumnForm, setOpenNewColumnForm] = useState(false);
 
