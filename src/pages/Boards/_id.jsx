@@ -11,6 +11,7 @@ import {
   fetchBoardDetailsAPI,
   CreateNewColumnApi,
   CreateNewCardApi,
+  updateBoardDetailsAPI,
 } from "~/apis";
 
 function Board() {
@@ -68,6 +69,21 @@ function Board() {
     setBoard(newBoard);
   };
 
+  //call api xử lí khi kéo thả column
+  const moveColumns = async (dndOrderedColumn) => {
+    // update cho chuẩn data setBoard
+    const dndOrderedColumnIds = dndOrderedColumn.map((column) => column._id);
+    const newBoard = { ...board };
+    newBoard.columns = dndOrderedColumn;
+    newBoard.columnOrderIds = dndOrderedColumn;
+    setBoard(newBoard);
+
+    //call API update board
+    await updateBoardDetailsAPI(newBoard._id, {
+      columnOrderIds: dndOrderedColumnIds,
+    });
+  };
+
   return (
     <Container disableGutters maxWidth={false} sx={{ height: "100vh" }}>
       <AppBar />
@@ -76,6 +92,7 @@ function Board() {
         board={board}
         createNewColumn={createNewColumn}
         createNewCard={createNewCard}
+        moveColumns={moveColumns}
       />
     </Container>
   );
