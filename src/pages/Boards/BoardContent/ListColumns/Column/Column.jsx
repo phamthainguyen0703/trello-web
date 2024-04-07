@@ -18,7 +18,6 @@ import AddCardIcon from "@mui/icons-material/AddCard";
 import AddIcon from "@mui/icons-material/Add";
 import DragHandleIcon from "@mui/icons-material/DragHandle";
 import ListCards from "./ListCards/ListCards";
-import { mapOrder } from "~/utils/sorts";
 import TextField from "@mui/material/TextField";
 import CloseIcon from "@mui/icons-material/Close";
 import { toast } from "react-toastify";
@@ -55,7 +54,8 @@ function Column({ column, createNewCard }) {
     setAnchorEl(null);
   };
 
-  const orderedCards = mapOrder(column?.cards, column?.cardOrderIds, "_id");
+  // card đã được sắp xếp ở component cha cao nhất
+  const orderedCards = column.cards;
 
   const [newCardTitle, setNewCardTitle] = useState("");
 
@@ -65,7 +65,7 @@ function Column({ column, createNewCard }) {
     setOpenNewCardForm(!openNewCardForm);
   };
 
-  const addNewCard = async () => {
+  const addNewCard = () => {
     if (!newCardTitle) {
       toast.error("Please enter card title", { position: "bottom-right" });
 
@@ -77,7 +77,7 @@ function Column({ column, createNewCard }) {
       columnId: column._id,
     };
 
-    await createNewCard(newCardData);
+    createNewCard(newCardData);
 
     //đóng trạng thái thêm card mới & clear input
     toggleOpenNewCardForm();

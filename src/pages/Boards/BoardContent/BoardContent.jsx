@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import Box from "@mui/material/Box";
 import ListColumns from "./ListColumns/ListColumns";
-import { mapOrder } from "~/utils/sorts";
 import Column from "./ListColumns/Column/Column";
 import Card from "./ListColumns/Column/ListCards/Card/Card";
 import { cloneDeep, isEmpty } from "lodash";
@@ -31,7 +30,13 @@ const ACTIVE_DRAG_ITEM_TYPE = {
   CARD: " ACTIVE_DRAG_ITEM_TYPE-CARD",
 };
 
-function BoardContent({ board, createNewColumn, createNewCard, moveColumns }) {
+function BoardContent({
+  board,
+  createNewColumn,
+  createNewCard,
+  moveColumns,
+  moveCardInTheSameColumn,
+}) {
   //fix trường hợp click bị gọi event(drag và move 10px thì mới gọi event)
   // const pointerSensor = useSensor(PointerSensor, {
   //   activationConstraint: {
@@ -66,9 +71,8 @@ function BoardContent({ board, createNewColumn, createNewCard, moveColumns }) {
   const lastOverId = useRef(null);
 
   useEffect(() => {
-    setOrderedColumnState(
-      mapOrder(board?.columns, board?.columnOrderIds, "_id")
-    );
+    // column đã được sắp xếp ở component cha cao nhất
+    setOrderedColumnState(board.columns);
   }, [board]);
 
   //find column theo card id
@@ -259,15 +263,24 @@ function BoardContent({ board, createNewColumn, createNewCard, moveColumns }) {
           oldCardIndex,
           newCardIndex
         );
+
+        const dndOrderedCardIds = dndOrderedCards.map((card) => card._id);
+
         setOrderedColumnState((prevColumns) => {
           const nextColumns = cloneDeep(prevColumns);
           const targetColumn = nextColumns.find(
             (column) => column._id === overColumn._id
           );
           targetColumn.cards = dndOrderedCards;
-          targetColumn.cardOrderIds = dndOrderedCards.map((card) => card._id);
+          targetColumn.cardOrderIds = dndOrderedCardIds;
           return nextColumns;
         });
+
+        moveCardInTheSameColumn(
+          dndOrderedCards,
+          dndOrderedCardIds,
+          oldColumnWhenDraggingCard._id
+        );
       }
     }
 
@@ -289,10 +302,9 @@ function BoardContent({ board, createNewColumn, createNewCard, moveColumns }) {
         );
 
         // const dndOrderedColumnIds = dndOrderedColumn.map((column) => column._id )
+        setOrderedColumnState(dndOrderedColumn);
 
         moveColumns(dndOrderedColumn);
-
-        setOrderedColumnState(dndOrderedColumn);
       }
     }
 
