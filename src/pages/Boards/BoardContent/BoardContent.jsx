@@ -36,6 +36,7 @@ function BoardContent({
   createNewCard,
   moveColumns,
   moveCardInTheSameColumn,
+  moveCardToDifferentColumns,
 }) {
   //fix trường hợp click bị gọi event(drag và move 10px thì mới gọi event)
   // const pointerSensor = useSensor(PointerSensor, {
@@ -89,7 +90,8 @@ function BoardContent({
     over,
     activeColumn,
     activeDraggingCardId,
-    activeDraggingCardData
+    activeDraggingCardData,
+    triggerFrom
   ) => {
     setOrderedColumnState((prevColumns) => {
       const overCardIndex = overColumn?.cards?.findIndex(
@@ -165,6 +167,16 @@ function BoardContent({
         );
       }
 
+      // chỉ gọi API 1 lần sau khi đã kéo thả xong
+      if (triggerFrom === "handleDragEnd") {
+        moveCardToDifferentColumns(
+          activeDraggingCardId,
+          oldColumnWhenDraggingCard._id,
+          nextOverColumn._id,
+          nextColumns
+        );
+      }
+
       return nextColumns;
     });
   };
@@ -213,7 +225,8 @@ function BoardContent({
         over,
         activeColumn,
         activeDraggingCardId,
-        activeDraggingCardData
+        activeDraggingCardData,
+        "handleDragOver"
       );
     }
   };
@@ -246,7 +259,8 @@ function BoardContent({
           over,
           activeColumn,
           activeDraggingCardId,
-          activeDraggingCardData
+          activeDraggingCardData,
+          "handleDragEnd"
         );
       } else {
         //kéo thả card trong cùng 1 column
