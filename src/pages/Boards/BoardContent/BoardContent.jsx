@@ -37,6 +37,7 @@ function BoardContent({
   moveColumns,
   moveCardInTheSameColumn,
   moveCardToDifferentColumns,
+  deleteColumnDetails,
 }) {
   //fix trường hợp click bị gọi event(drag và move 10px thì mới gọi event)
   // const pointerSensor = useSensor(PointerSensor, {
@@ -398,6 +399,7 @@ function BoardContent({
           columns={orderedColumnState}
           createNewColumn={createNewColumn}
           createNewCard={createNewCard}
+          deleteColumnDetails={deleteColumnDetails}
         />
         <DragOverlay
           dropAnimation={{

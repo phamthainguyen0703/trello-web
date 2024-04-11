@@ -9,6 +9,7 @@ import { mapOrder } from "~/utils/sorts";
 import { Box } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
 import Typography from "@mui/material/Typography";
+import { toast } from "react-toastify";
 
 // import { mockData } from "~/apis/mock-data";
 import {
@@ -18,6 +19,7 @@ import {
   updateBoardDetailsAPI,
   updateColumnDetailsAPI,
   moveCardToDifferentColumnsAPI,
+  deleteColumnDetailsAPI,
 } from "~/apis";
 
 function Board() {
@@ -180,6 +182,20 @@ function Board() {
     );
   }
 
+  //xử lí xóa column và cards bên trong
+  const deleteColumnDetails = (columnId) => {
+    const newBoard = { ...board };
+    newBoard.columns = newBoard.columns.filter((c) => c._id !== columnId);
+    newBoard.columnOrderIds = newBoard.columnOrderIds.filter(
+      (_id) => _id !== columnId
+    );
+    setBoard(newBoard);
+
+    deleteColumnDetailsAPI(columnId).then((res) => {
+      toast.success(res?.deleteResult);
+    });
+  };
+
   return (
     <Container disableGutters maxWidth={false} sx={{ height: "100vh" }}>
       <AppBar />
@@ -191,6 +207,7 @@ function Board() {
         moveColumns={moveColumns}
         moveCardInTheSameColumn={moveCardInTheSameColumn}
         moveCardToDifferentColumns={moveCardToDifferentColumns}
+        deleteColumnDetails={deleteColumnDetails}
       />
     </Container>
   );
