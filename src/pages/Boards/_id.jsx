@@ -177,7 +177,10 @@ function Board() {
         }}
       >
         <CircularProgress />
-        <Typography>Loading Board...</Typography>
+        <Typography>
+          Loading Board...(vì sử dụng host free nên loading hơi lâu. Xin quý vị
+          nhẫn nại)
+        </Typography>
       </Box>
     );
   }
